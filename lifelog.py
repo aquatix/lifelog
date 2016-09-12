@@ -15,8 +15,15 @@ def get_entries_per_day(content):
     Split logbook month content into dict with entries per day
     """
     entries = content.split('## ')
-    print entries
     days = {}
+    for entry in entries:
+        entry_parts = entry.split('\n')
+        if entry_parts[0]:
+            date = entry_parts[0].split(' ')[0]
+            print date
+            entry_parts[0] = '## {}'.format(entry_parts[0])
+            days[date] = {'title': entry_parts[0], 'body': '\n'.join(entry_parts[1:])}
+    print days
     return days
 
 
@@ -50,11 +57,14 @@ def build_logbook(path, destination):
     file_postfix = '.md'
     if config['postfix']:
         file_postfix = '{}{}'.format(config['postfix'], '.md')
-    try_filename = os.path.join(path, '{}{}'.format(config['startdate'], file_postfix))
-    data = fileutil.get_file_contents(try_filename)
-    if not data:
-        print(try_filename + ' not found')
-    days = get_entries_per_day(data)
+
+    filenames = [config['startdate'], '201609']
+    for filename in filenames:
+        try_filename = os.path.join(path, '{}{}'.format(filename, file_postfix))
+        data = fileutil.get_file_contents(try_filename)
+        if not data:
+            print(try_filename + ' not found')
+        days = get_entries_per_day(data)
 
 
 if __name__ == '__main__':
