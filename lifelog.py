@@ -10,6 +10,22 @@ import yaml
 from utilkit import fileutil, datetimeutil
 
 
+def get_dates_in_range(startdate, enddate):
+    """ Return list of dates in iso8601 format: yyyymmdd """
+    from datetime import date, timedelta as td
+
+    result = []
+    d1 = date(2008, 8, 15)
+    d2 = date(2008, 9, 15)
+
+    delta = d2 - d1
+
+    for i in range(delta.days + 1):
+        result.append(d1 + td(days=i))
+
+    return result
+
+
 def get_entries_per_day(content):
     """
     Split logbook month content into dict with entries per day
@@ -58,6 +74,7 @@ def build_logbook(path, destination):
     if config['postfix']:
         file_postfix = '{}{}'.format(config['postfix'], '.md')
 
+    dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
     filenames = [config['startdate'], '201609']
     for filename in filenames:
         try_filename = os.path.join(path, '{}{}'.format(filename, file_postfix))
@@ -69,6 +86,6 @@ def build_logbook(path, destination):
 
 if __name__ == '__main__':
     """
-    Paragoo is ran standalone
+    Lifelog is being run standalone
     """
     cli()
