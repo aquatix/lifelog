@@ -43,6 +43,30 @@ def get_entries_per_day(content):
     return days
 
 
+def process_day(config, textdata):
+    days = get_entries_per_day(textdata)
+    # TODO: process time tags, 'med', 'priv' tags and such
+    # TODO: parse activity data, sleep data and such
+    return days
+
+
+def process_archive(config, path, destination):
+    print config
+    file_postfix = '.md'
+    if config['postfix']:
+        file_postfix = '{}{}'.format(config['postfix'], '.md')
+
+    dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
+    filenames = [config['startdate'], '201609']
+    for filename in filenames:
+        try_filename = os.path.join(path, '{}{}'.format(filename, file_postfix))
+        textdata = fileutil.get_file_contents(try_filename)
+        if not textdata:
+            print(try_filename + ' not found')
+        # activitydata = parse_google_fit_checkout()
+        this_day = process_day(config, textdata)
+
+
 ## Main program
 @click.group()
 def cli():
@@ -69,19 +93,7 @@ def build_logbook(path, destination):
         print e
         sys.exit(1)
 
-    print config
-    file_postfix = '.md'
-    if config['postfix']:
-        file_postfix = '{}{}'.format(config['postfix'], '.md')
-
-    dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
-    filenames = [config['startdate'], '201609']
-    for filename in filenames:
-        try_filename = os.path.join(path, '{}{}'.format(filename, file_postfix))
-        data = fileutil.get_file_contents(try_filename)
-        if not data:
-            print(try_filename + ' not found')
-        days = get_entries_per_day(data)
+    process_archive(config, path, destination)
 
 
 if __name__ == '__main__':
