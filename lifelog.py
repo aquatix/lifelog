@@ -36,10 +36,10 @@ def get_entries_per_day(content):
         entry_parts = entry.split('\n')
         if entry_parts[0]:
             date = entry_parts[0].split(' ')[0]
-            print date
+            print(date)
             entry_parts[0] = '## {}'.format(entry_parts[0])
             days[date] = {'title': entry_parts[0], 'body': '\n'.join(entry_parts[1:])}
-    print days
+    print(days)
     return days
 
 
@@ -51,7 +51,7 @@ def process_day(config, textdata):
 
 
 def process_archive(config, path, destination):
-    print config
+    print(config)
     file_postfix = '.md'
     if config['postfix']:
         file_postfix = '{}{}'.format(config['postfix'], '.md')
@@ -90,7 +90,7 @@ def build_logbook(path, destination):
         config = yaml.load(f)
         f.close()
     except IOError as e:
-        print e
+        print(e)
         sys.exit(1)
 
     process_archive(config, path, destination)
