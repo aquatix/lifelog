@@ -3,6 +3,7 @@ lifelog.py
 Build a HTML representation of your logbook, enriched with data from various sources
 """
 import os
+import sys
 import click
 import yaml
 from utilkit import fileutil, datetimeutil
@@ -46,19 +47,39 @@ def get_entries_per_day(content):
     return days
 
 
-def process_day(config, textdata):
+def process_day(config, textdata, censor=False):
     days = get_entries_per_day(textdata)
     # Extra text to highlight, when starting a line:
     highlights = config['highlight']
     # If in non-private mode, filter lines starting with:
     filters = config['filter']
 
+    #print(days)
+    for day in days:
+        daylines = days[day]['body'].split('\n')
+        newdaylines = []
+        for line in daylines:
+            if censor:
+                for privfilter in filters:
+                    print('"{}"'.format(line[0:(len(privfilter))]))
+                    if line[0:len(privfilter)] == privfilter:
+                        print('skipping!')
+                        print(line)
+                        # Skip this line
+                        continue
+            for highlight in highlights:
+                if line[0:len(highlight)] == highlight:
+                    # Add emphasizing, so *'s or _'s
+                    line = '_{}_{}'.format(line[0:len(highlight)], line[len(highlight):])
+            newdaylines.append(line)
+        days[day] = '\n'.join(newdaylines)
+
     # TODO: process time tags, 'med', 'priv' tags and such
     # TODO: parse activity data, sleep data and such
     return days
 
 
-def process_archive(config, path, destination):
+def process_archive(config, path, destination, censor=False):
     print(config)
     file_postfix = '.md'
     if config['postfix']:
@@ -88,7 +109,8 @@ def cli():
 @cli.command()
 @click.option('-p', '--path', prompt='Logbook path')
 @click.option('-d', '--destination', prompt='Destination path')
-def build_logbook(path, destination):
+@click.option('--censor/--normal', default=False)
+def build_logbook(path, destination, censor):
     """
     Parse logbook markdown files, build html. Enrich with external sources, images
     """
@@ -102,7 +124,7 @@ def build_logbook(path, destination):
         print(e)
         sys.exit(1)
 
-    process_archive(config, path, destination)
+    process_archive(config, path, destination, censor)
 
 
 if __name__ == '__main__':
