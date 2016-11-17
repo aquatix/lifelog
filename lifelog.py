@@ -4,8 +4,6 @@ Build a HTML representation of your logbook, enriched with data from various sou
 """
 import os
 import click
-import jinja2
-import markdown
 import yaml
 from utilkit import fileutil, datetimeutil
 
@@ -43,11 +41,6 @@ def get_entries_per_day(content):
     return days
 
 
-def render_day(this_day):
-    """ Convert the various dictionaries back to markdown/html """
-    pass
-
-
 def process_day(config, textdata):
     days = get_entries_per_day(textdata)
     # TODO: process time tags, 'med', 'priv' tags and such
@@ -70,7 +63,6 @@ def process_archive(config, path, destination):
             print(try_filename + ' not found')
         # activitydata = parse_google_fit_checkout()
         this_day = process_day(config, textdata)
-        day_html = render_day(this_day)
         print('{}/{}.md'.format(destination, filename))
 
 
