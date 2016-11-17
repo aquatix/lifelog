@@ -7,14 +7,19 @@ import click
 import yaml
 from utilkit import fileutil, datetimeutil
 
+def string_to_date(datestring):
+    from datetime import date
+    datestring = datestring.replace('-', '')
+    return date(int(datestring[0:4]), int(datestring[4:6]), int(datestring[6:8]))
+
 
 def get_dates_in_range(startdate, enddate):
     """ Return list of dates in iso8601 format: yyyymmdd """
     from datetime import date, timedelta as td
 
     result = []
-    d1 = date(2008, 8, 15)
-    d2 = date(2008, 9, 15)
+    d1 = string_to_date(startdate)
+    d2 = string_to_date(enddate)
 
     delta = d2 - d1
 
@@ -37,12 +42,17 @@ def get_entries_per_day(content):
             print(date)
             entry_parts[0] = '## {}'.format(entry_parts[0])
             days[date] = {'title': entry_parts[0], 'body': '\n'.join(entry_parts[1:])}
-    print(days)
+    #print(days)
     return days
 
 
 def process_day(config, textdata):
     days = get_entries_per_day(textdata)
+    # Extra text to highlight, when starting a line:
+    highlights = config['highlight']
+    # If in non-private mode, filter lines starting with:
+    filters = config['filter']
+
     # TODO: process time tags, 'med', 'priv' tags and such
     # TODO: parse activity data, sleep data and such
     return days
