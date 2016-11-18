@@ -110,7 +110,7 @@ def cli():
 @cli.command()
 @click.option('-p', '--path', prompt='Logbook path',type=click.Path(exists=True))
 @click.option('-d', '--destination', prompt='Destination path', type=click.Path(exists=True))
-@click.option('-s', '--sleepdata', prompt='Sleep as Android export file', default=None, type=click.Path(exists=True))
+@click.option('-s', '--sleepdata', default=None, type=click.Path(exists=True))
 @click.option('--censor/--normal', default=False)
 def build_logbook(path, destination, sleepdata, censor):
     """
