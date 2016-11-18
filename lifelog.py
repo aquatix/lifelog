@@ -7,6 +7,7 @@ import sys
 import click
 import yaml
 from utilkit import fileutil, datetimeutil
+from plugins import sleepasandroid
 
 def string_to_date(datestring):
     from datetime import date
