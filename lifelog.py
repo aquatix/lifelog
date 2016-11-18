@@ -80,7 +80,7 @@ def process_day(config, textdata, censor=False):
     return days
 
 
-def process_archive(config, path, destination, censor=False):
+def process_archive(config, path, destination, plugins, censor=False):
     print(config)
     file_postfix = '.md'
     if config['postfix']:
@@ -110,8 +110,9 @@ def cli():
 @cli.command()
 @click.option('-p', '--path', prompt='Logbook path')
 @click.option('-d', '--destination', prompt='Destination path')
+@click.option('-s', '--sleepdata', prompt='Sleep as Android export file', default=None)
 @click.option('--censor/--normal', default=False)
-def build_logbook(path, destination, censor):
+def build_logbook(path, destination, sleepdata, censor):
     """
     Parse logbook markdown files, build html. Enrich with external sources, images
     """
@@ -125,7 +126,12 @@ def build_logbook(path, destination, censor):
         print(e)
         sys.exit(1)
 
-    process_archive(config, path, destination, censor)
+    plugins = {}
+    if sleepdata:
+        plugins['sleepasandroid': sleepdata]
+
+    print(plugins)
+    process_archive(config, path, destination, plugins, censor)
 
 
 if __name__ == '__main__':
