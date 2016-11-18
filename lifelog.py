@@ -108,9 +108,9 @@ def cli():
 
 
 @cli.command()
-@click.option('-p', '--path', prompt='Logbook path')
-@click.option('-d', '--destination', prompt='Destination path')
-@click.option('-s', '--sleepdata', prompt='Sleep as Android export file', default=None)
+@click.option('-p', '--path', prompt='Logbook path',type=click.Path(exists=True))
+@click.option('-d', '--destination', prompt='Destination path', type=click.Path(exists=True))
+@click.option('-s', '--sleepdata', prompt='Sleep as Android export file', default=None, type=click.Path(exists=True))
 @click.option('--censor/--normal', default=False)
 def build_logbook(path, destination, sleepdata, censor):
     """
@@ -128,7 +128,7 @@ def build_logbook(path, destination, sleepdata, censor):
 
     plugins = {}
     if sleepdata:
-        plugins['sleepasandroid': sleepdata]
+        plugins['sleepasandroid'] = sleepdata
 
     print(plugins)
     process_archive(config, path, destination, plugins, censor)
