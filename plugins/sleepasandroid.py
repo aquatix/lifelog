@@ -23,7 +23,10 @@ def read(filename):
 
 def export(data, filename):
     with open(filename, 'wb') as csvfile:
-        w = csv.DictWriter(csvfile,['date','weekday','start_time','end_time','length','lenadjust','netlength','cycles','deep'])
+        w = csv.DictWriter(csvfile,
+                           ['date', 'weekday', 'start_time', 'end_time', 'length', 'lenadjust', 'netlength',
+                            'cycles', 'deep']
+                          )
         w.writeheader()
         w.writerows(data)
 
