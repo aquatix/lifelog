@@ -25,7 +25,7 @@ def export(data, filename):
     with open(filename, 'wb') as csvfile:
         w = csv.DictWriter(csvfile,
                            ['date', 'weekday', 'start_time', 'end_time', 'length', 'lenadjust', 'netlength',
-                            'cycles', 'deep']
+                            'cycles', 'deep', 'comment']
                           )
         w.writeheader()
         w.writerows(data)
@@ -46,6 +46,7 @@ def parse_sleep(row):
     sleep['netlength'] = ((end - start).total_seconds() + (sleep['lenadjust'] * 60)) / 3600
     sleep['cycles'] = int(row[11])
     sleep['deep'] = float(row[12])
+    sleep['comment'] = row[7]
     return sleep
 
 def filter_events(keys, values):
