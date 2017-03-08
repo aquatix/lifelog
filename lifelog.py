@@ -6,7 +6,6 @@ import os
 import sys
 import click
 import yaml
-from utilkit import fileutil, datetimeutil
 from plugins import sleepasandroid
 
 def string_to_date(datestring):
@@ -90,9 +89,13 @@ def process_archive(config, path, destination, plugins, censor=False):
     filenames = [config['startdate'], '201609']
     for filename in filenames:
         try_filename = os.path.join(path, '{}{}'.format(filename, file_postfix))
-        textdata = fileutil.get_file_contents(try_filename)
-        if not textdata:
+        try:
+            with open(filename) as pf:
+                textdata = pf.read()
+        except IOError:
+            # File not found, return None
             print(try_filename + ' not found')
+            continue
         # activitydata = parse_google_fit_checkout()
         this_day = process_day(config, textdata)
         print('{}/{}.md'.format(destination, filename))
