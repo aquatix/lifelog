@@ -54,6 +54,7 @@ def process_day(config, textdata, censor=False):
     # If in non-private mode, filter lines starting with:
     filters = config['filter']
 
+    newdays = {}
     #print(days)
     for day in days:
         daylines = days[day]['body'].split('\n')
@@ -72,11 +73,11 @@ def process_day(config, textdata, censor=False):
                     # Add emphasizing, so *'s or _'s
                     line = '_{}_{}'.format(line[0:len(highlight)], line[len(highlight):])
             newdaylines.append(line)
-        days[day] = '\n'.join(newdaylines)
+        newdays[day] = '\n'.join(newdaylines)
 
     # TODO: process time tags, 'med', 'priv' tags and such
     # TODO: parse activity data, sleep data and such
-    return days
+    return newdays
 
 
 def process_archive(config, path, destination, plugins, censor=False):
@@ -90,7 +91,8 @@ def process_archive(config, path, destination, plugins, censor=False):
     for filename in filenames:
         try_filename = os.path.join(path, '{}{}'.format(filename, file_postfix))
         try:
-            with open(filename) as pf:
+            print 'processing ' + try_filename
+            with open(try_filename) as pf:
                 textdata = pf.read()
         except IOError:
             # File not found, return None
@@ -98,7 +100,16 @@ def process_archive(config, path, destination, plugins, censor=False):
             continue
         # activitydata = parse_google_fit_checkout()
         this_day = process_day(config, textdata)
-        print('{}/{}.md'.format(destination, filename))
+        destination_path = os.path.join(destination, str(filename) + '.md')
+        #print('{}/{}.md'.format(destination, filename))
+        print destination_path
+        # Continue for now, as this_day is a dict with days
+        continue
+        try:
+            with open(destination_path, 'w') as df:
+                df.write(this_day)
+        except IOError:
+            print(destination_path + ' not writable')
 
 
 ## Main program
@@ -132,6 +143,7 @@ def build_logbook(path, destination, sleepdata, censor):
     plugins = {}
     if sleepdata:
         plugins['sleepasandroid'] = sleepdata
+        sleepdataitems = sleepasandroid.read(sleepdata)
 
     print(plugins)
     process_archive(config, path, destination, plugins, censor)
