@@ -8,14 +8,18 @@ import click
 import yaml
 from plugins import sleepasandroid
 
+
 def string_to_date(datestring):
     from datetime import date
-    datestring = datestring.replace('-', '')
+    datestring = str(datestring).replace('-', '')
+    if len(datestring) == 6:
+        datestring = datestring + '01'
     return date(int(datestring[0:4]), int(datestring[4:6]), int(datestring[6:8]))
 
 
 def get_dates_in_range(startdate, enddate):
     """ Return list of dates in iso8601 format: yyyymmdd """
+    """ returns: list of Date objects """
     from datetime import date, timedelta as td
 
     result = []
@@ -26,6 +30,27 @@ def get_dates_in_range(startdate, enddate):
 
     for i in range(delta.days + 1):
         result.append(d1 + td(days=i))
+
+    return result
+
+
+def get_months_in_range(startdate, enddate):
+    """ Return list of months in iso8601 format: yyyymm """
+    from datetime import date, timedelta as td
+
+    result = []
+    startmonth = [int(str(startdate)[0:4]), int(str(startdate)[4:6])]
+    endmonth = [int(str(enddate)[0:4]), int(str(enddate)[4:6])]
+
+    this_year = startmonth[0]
+    this_month = startmonth[1]
+
+    while this_year < endmonth[0] or (this_year == endmonth[0] and this_month <= endmonth[1]):
+        result.append('{}{num:02d}'.format(this_year, num=this_month))
+        this_month += 1
+        if this_month == 13:
+            this_month = 1
+            this_year += 1
 
     return result
 
@@ -86,12 +111,18 @@ def process_archive(config, path, destination, plugins, censor=False):
     if config['postfix']:
         file_postfix = '{}{}'.format(config['postfix'], '.md')
 
+    if plugins['sleepasandroid']:
+        sleepdataitems = sleepasandroid.read(plugins['sleepasandroid'])
+
     dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
     filenames = [config['startdate'], '201609']
+    filenames = get_months_in_range(config['startdate'], '201703')
+    print(filenames)
+    #sys.exit()
     for filename in filenames:
         try_filename = os.path.join(path, '{}{}'.format(filename, file_postfix))
         try:
-            print 'processing ' + try_filename
+            print('processing ' + try_filename)
             with open(try_filename) as pf:
                 textdata = pf.read()
         except IOError:
@@ -102,7 +133,7 @@ def process_archive(config, path, destination, plugins, censor=False):
         this_day = process_day(config, textdata)
         destination_path = os.path.join(destination, str(filename) + '.md')
         #print('{}/{}.md'.format(destination, filename))
-        print destination_path
+        print(destination_path)
         # Continue for now, as this_day is a dict with days
         continue
         try:
@@ -143,7 +174,6 @@ def build_logbook(path, destination, sleepdata, censor):
     plugins = {}
     if sleepdata:
         plugins['sleepasandroid'] = sleepdata
-        sleepdataitems = sleepasandroid.read(sleepdata)
 
     print(plugins)
     process_archive(config, path, destination, plugins, censor)
