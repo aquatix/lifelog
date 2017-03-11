@@ -8,9 +8,11 @@ and the weather.
 
 |PyPI version| |PyPI downloads| |PyPI license| |Code health|
 
-`lifelog` outputs a [paragoo](https://github.com/aquatix/paragoo) project, which
-can be rendered to HTML. Use the [paragoo-theme-lifelog](https://github.com/aquatix/paragoo-theme-material)
-for the best results.
+`lifelog` outputs a `paragoo_` project, which can be rendered to HTML.
+Use the `paragoo-theme-lifelog_` for the best results.
+
+Another option is to output a `pelican_` project, which can be rendered as a
+weblog. This is an even more versatile output format.
 
 
 Installation
@@ -38,6 +40,11 @@ Plugins
 - Weather (which provider?)
 
 
+TODO
+----
+
+- Offline searching with `lunr_` or `fullproof_` Javascript search solutions.
+
 .. |PyPI version| image:: https://img.shields.io/pypi/v/lifelog.svg
    :target: https://pypi.python.org/pypi/lifelog/
 .. |PyPI downloads| image:: https://img.shields.io/pypi/dm/lifelog.svg
@@ -47,3 +54,8 @@ Plugins
 .. |Code health| image:: https://landscape.io/github/aquatix/lifelog/master/landscape.svg?style=flat
    :target: https://landscape.io/github/aquatix/ns-api/master
    :alt: Code Health
+.. _paragoo: https://github.com/aquatix/paragoo
+.. _paragoo-theme-lifelog: https://github.com/aquatix/paragoo-theme-material
+.. _pelican: https://blog.getpelican.com/
+.. _lunr: http://lunrjs.com/
+.. _fullproof: https://github.com/reyesr/fullproof
