@@ -8,10 +8,10 @@ and the weather.
 
 |PyPI version| |PyPI downloads| |PyPI license| |Code health|
 
-`lifelog` outputs a `paragoo_` project, which can be rendered to HTML.
-Use the `paragoo-theme-lifelog_` for the best results.
+`lifelog` outputs a `paragoo`_ project, which can be rendered to HTML.
+Use the `paragoo-theme-lifelog`_ for the best results.
 
-Another option is to output a `pelican_` project, which can be rendered as a
+Another option is to output a `pelican`_ project, which can be rendered as a
 weblog. This is an even more versatile output format.
 
 
@@ -43,7 +43,7 @@ Plugins
 TODO
 ----
 
-- Offline searching with `lunr_` or `fullproof_` Javascript search solutions.
+- Offline searching with `lunr`_ or `fullproof`_ Javascript search solutions.
 
 .. |PyPI version| image:: https://img.shields.io/pypi/v/lifelog.svg
    :target: https://pypi.python.org/pypi/lifelog/
