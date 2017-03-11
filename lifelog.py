@@ -7,6 +7,9 @@ import sys
 import click
 import yaml
 from plugins import sleepasandroid
+# Export plugins
+from plugins import paragoo
+from plugins import pelican
 
 
 def string_to_date(datestring):
@@ -157,11 +160,13 @@ def cli():
 @click.option('-d', '--destination', prompt='Destination path', type=click.Path(exists=True))
 @click.option('-s', '--sleepdata', default=None, type=click.Path(exists=True))
 @click.option('--censor/--normal', default=False)
-def build_logbook(path, destination, sleepdata, censor):
+@click.option('--sitetype', type=click.Choice(['paragoo', 'pelican']), default='pelican')
+def build_logbook(path, destination, sleepdata, censor, sitetype):
     """
     Parse logbook markdown files, build html. Enrich with external sources, images
     """
     click.secho('Needs implementing', fg='red')
+    click.echo(sitetype)
 
     try:
         f = open(os.path.join(path, 'lifelog.yaml'))
@@ -177,6 +182,10 @@ def build_logbook(path, destination, sleepdata, censor):
 
     print(plugins)
     process_archive(config, path, destination, plugins, censor)
+    if sitetype is 'paragoo':
+        paragoo.createproject(destination)
+    elif sitetype is 'pelican':
+        pelican.createproject(destination)
 
 
 if __name__ == '__main__':
