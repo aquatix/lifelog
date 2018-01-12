@@ -11,6 +11,12 @@ import yaml
 # Export plugins
 from plugins import paragoo, pelican, sleepasandroid
 
+try:
+    if os.environ['BETTER_EXCEPTIONS']:
+        import better_exceptions
+except KeyError:
+    pass
+
 
 def string_to_date(datestring):
     from datetime import date
