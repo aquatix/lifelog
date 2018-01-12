@@ -4,12 +4,12 @@ Build a HTML representation of your logbook, enriched with data from various sou
 """
 import os
 import sys
+
 import click
 import yaml
-from plugins import sleepasandroid
+
 # Export plugins
-from plugins import paragoo
-from plugins import pelican
+from plugins import paragoo, pelican, sleepasandroid
 
 
 def string_to_date(datestring):
