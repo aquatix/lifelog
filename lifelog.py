@@ -114,8 +114,11 @@ def process_archive(config, path, destination, plugins, censor=False):
     if config['postfix']:
         file_postfix = '{}{}'.format(config['postfix'], '.md')
 
-    if plugins['sleepasandroid']:
-        sleepdataitems = sleepasandroid.read(plugins['sleepasandroid'])
+    try:
+        if plugins['sleepasandroid']:
+            sleepdataitems = sleepasandroid.read(plugins['sleepasandroid'])
+    except KeyError:
+        pass
 
     dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
     filenames = [config['startdate'], '201609']
@@ -156,7 +159,7 @@ def cli():
 
 
 @cli.command()
-@click.option('-p', '--path', prompt='Logbook path',type=click.Path(exists=True))
+@click.option('-p', '--path', prompt='Logbook path', type=click.Path(exists=True))
 @click.option('-d', '--destination', prompt='Destination path', type=click.Path(exists=True))
 @click.option('-s', '--sleepdata', default=None, type=click.Path(exists=True))
 @click.option('--censor/--normal', default=False)
@@ -182,9 +185,9 @@ def build_logbook(path, destination, sleepdata, censor, sitetype):
 
     print(plugins)
     process_archive(config, path, destination, plugins, censor)
-    if sitetype is 'paragoo':
+    if sitetype == 'paragoo':
         paragoo.createproject(destination)
-    elif sitetype is 'pelican':
+    elif sitetype == 'pelican':
         pelican.createproject(destination)
 
 
