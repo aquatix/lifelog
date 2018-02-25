@@ -9,10 +9,12 @@ class Cogitorama:
     @staticmethod
     def get_term(term):
         if not term:
-            return None
-        #
-        sign = '+'
-        return (term, sign)
+            return None, None
+        sign = term[0]
+        term = term[1:]
+        if sign == '+' or sign == '-':
+            return (term, sign)
+        return None, None
 
     def add_day(self, date, cogitorama):
         self.cogitoramas[date] = cogitorama
@@ -22,15 +24,15 @@ class Cogitorama:
         result = {}
         for day in self.cogitoramas:
             for term in self.cogitoramas[day].split(' '):
-                print(term)
+                term, sign = self.get_term(term)
                 if not term:
                     continue
                 if not term in result:
-                    result[term[1:]] = 0
-                if term[0] == '+':
-                    result[term[1:]] += 1
-                elif term[0] == '-':
-                    result[term[1:]] -= 1
+                    result[term] = 0
+                if sign == '+':
+                    result[term] += 1
+                elif sign == '-':
+                    result[term] -= 1
                 else:
                     print('Error processing cogitorama term "{}"'.format(term))
         return result
