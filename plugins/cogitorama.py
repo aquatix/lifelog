@@ -38,6 +38,12 @@ class Cogitorama:
         return result
 
 
+    def print_stats(self):
+        cogs = self.get_cogitoramas()
+        for key in sorted(cogs):
+            print('{:3} {}'.format(cogs[key], key))
+
+
 if __name__ == "__main__":
     # TODO: create tests
     pass

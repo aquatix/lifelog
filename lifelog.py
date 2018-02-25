@@ -153,8 +153,6 @@ def process_archive(config, path, destination, plugins, censor=False):
         #print('{}/{}.md'.format(destination, filename))
         print(destination_path)
 
-        print(cogitorama.get_cogitoramas())
-
         # Continue for now, as this_month is a dict with days
         continue
         try:
@@ -162,6 +160,8 @@ def process_archive(config, path, destination, plugins, censor=False):
                 df.write(this_month)
         except IOError:
             print(destination_path + ' not writable')
+
+    print(cogitorama.print_stats())
 
 
 ## Main program
