@@ -78,7 +78,6 @@ def get_entries_per_day(content):
             print(date)
             entry_parts[0] = '## {}'.format(entry_parts[0])
             days[date] = {'title': entry_parts[0], 'body': '\n'.join(entry_parts[1:])}
-    #print(days)
     return days
 
 
@@ -109,7 +108,6 @@ def process_month(config, textdata, censor=False, cogitorama=None):
                     line = '_{}_{}'.format(line[0:len(highlight)], line[len(highlight):])
             newdaylines.append(line)
             if cogitorama and line[0:len(cogitorama.PREFIX)].lower() == cogitorama.PREFIX:
-                print(line)
                 cogitorama.add_day(day, line[len(cogitorama.PREFIX):])
         newdays[day] = '\n'.join(newdaylines)
 
@@ -153,11 +151,15 @@ def process_archive(config, path, destination, plugins, censor=False):
         #print('{}/{}.md'.format(destination, filename))
         print(destination_path)
 
+        this_month_content = ''
+        for date in this_month:
+            this_month_content += '## {}\n{}'.format(date, this_month[date])
+
         # Continue for now, as this_month is a dict with days
-        continue
+        #continue
         try:
             with open(destination_path, 'w') as df:
-                df.write(this_month)
+                df.write(this_month_content)
         except IOError:
             print(destination_path + ' not writable')
 
