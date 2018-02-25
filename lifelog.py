@@ -10,6 +10,7 @@ import yaml
 
 # Export plugins
 from plugins import paragoo, pelican, sleepasandroid
+from plugins.cogitorama import Cogitorama
 
 try:
     if os.environ['BETTER_EXCEPTIONS']:
@@ -81,7 +82,7 @@ def get_entries_per_day(content):
     return days
 
 
-def process_day(config, textdata, censor=False):
+def process_month(config, textdata, censor=False, cogitorama=None):
     days = get_entries_per_day(textdata)
     # Extra text to highlight, when starting a line:
     highlights = config['highlight']
@@ -107,6 +108,9 @@ def process_day(config, textdata, censor=False):
                     # Add emphasizing, so *'s or _'s
                     line = '_{}_{}'.format(line[0:len(highlight)], line[len(highlight):])
             newdaylines.append(line)
+            if cogitorama and line[0:len(cogitorama.PREFIX)].lower() == cogitorama.PREFIX:
+                print(line)
+                cogitorama.add_day(day, line[len(cogitorama.PREFIX):])
         newdays[day] = '\n'.join(newdaylines)
 
     # TODO: process time tags, 'med', 'priv' tags and such
@@ -126,31 +130,36 @@ def process_archive(config, path, destination, plugins, censor=False):
     except KeyError:
         pass
 
+    cogitorama = Cogitorama()
+
     dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
     filenames = [config['startdate'], '201609']
-    filenames = get_months_in_range(config['startdate'], '201703')
+    filenames = get_months_in_range(config['startdate'], '201802')
     print(filenames)
     #sys.exit()
     for filename in filenames:
         try_filename = os.path.join(path, '{}{}'.format(filename, file_postfix))
         try:
             print('processing ' + try_filename)
-            with open(try_filename) as pf:
+            with open(try_filename, encoding='latin-1') as pf:
                 textdata = pf.read()
         except IOError:
             # File not found, return None
             print(try_filename + ' not found')
             continue
         # activitydata = parse_google_fit_checkout()
-        this_day = process_day(config, textdata)
+        this_month = process_month(config, textdata, censor=censor, cogitorama=cogitorama)
         destination_path = os.path.join(destination, str(filename) + '.md')
         #print('{}/{}.md'.format(destination, filename))
         print(destination_path)
-        # Continue for now, as this_day is a dict with days
+
+        print(cogitorama.get_cogitoramas())
+
+        # Continue for now, as this_month is a dict with days
         continue
         try:
             with open(destination_path, 'w') as df:
-                df.write(this_day)
+                df.write(this_month)
         except IOError:
             print(destination_path + ' not writable')
 
