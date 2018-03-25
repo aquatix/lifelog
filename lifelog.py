@@ -132,7 +132,7 @@ def process_archive(config, path, destination, plugins, censor=False):
 
     dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
     filenames = [config['startdate'], '201609']
-    filenames = get_months_in_range(config['startdate'], '201802')
+    filenames = get_months_in_range(config['startdate'], '201803')
     print(filenames)
     #sys.exit()
     for filename in filenames:
