@@ -28,7 +28,6 @@ def string_to_date(datestring):
 
 
 def get_dates_in_range(startdate, enddate):
-    """ Return list of dates in iso8601 format: yyyymmdd """
     """ returns: list of Date objects """
     from datetime import date, timedelta as td
 
@@ -190,7 +189,7 @@ def build_logbook(path, destination, sleepdata, censor, sitetype):
 
     try:
         f = open(os.path.join(path, 'lifelog.yaml'))
-        config = yaml.load(f)
+        config = yaml.safe_load(f)
         f.close()
     except IOError as e:
         print(e)
@@ -209,7 +208,5 @@ def build_logbook(path, destination, sleepdata, censor, sitetype):
 
 
 if __name__ == '__main__':
-    """
-    Lifelog is being run standalone
-    """
+    # Lifelog is being run standalone
     cli()
