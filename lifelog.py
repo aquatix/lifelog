@@ -1,5 +1,5 @@
-"""
-lifelog.py
+"""lifelog.py
+
 Build a HTML representation of your logbook, enriched with data from various sources
 """
 import os
@@ -28,7 +28,14 @@ def string_to_date(datestring):
 
 
 def get_dates_in_range(startdate, enddate):
-    """ returns: list of Date objects """
+    """Ennumerate all dates from startdate to enddate
+
+    Args:
+        startdate: start of the list of dates
+        enddate: end of the list of dates, likely today
+    Returns:
+        a list of Date objects
+    """
     from datetime import date, timedelta as td
 
     result = []
@@ -44,7 +51,14 @@ def get_dates_in_range(startdate, enddate):
 
 
 def get_months_in_range(startdate, enddate):
-    """ Return list of months in iso8601 format: yyyymm """
+    """Ennumerate all months from startdate to enddate
+
+    Args:
+        startdate: start of the list of dates
+        enddate: end of the list of dates, likely today
+    Returns:
+        list of months in iso8601 format: yyyymm
+    """
     from datetime import date, timedelta as td
 
     result = []
@@ -65,8 +79,12 @@ def get_months_in_range(startdate, enddate):
 
 
 def get_entries_per_day(content):
-    """
-    Split logbook month content into dict with entries per day
+    """Split logbook month content into dict with entries per day
+
+    Args:
+        content: 'raw' markdown text of a month
+    Returns:
+        dictionary of days
     """
     entries = content.split('## ')
     days = {}
@@ -168,9 +186,7 @@ def process_archive(config, path, destination, plugins, censor=False):
 ## Main program
 @click.group()
 def cli():
-    """
-    Lifelog logbook parser
-    """
+    # Lifelog logbook parser
     pass
 
 
@@ -181,8 +197,16 @@ def cli():
 @click.option('--censor/--normal', default=False)
 @click.option('--sitetype', type=click.Choice(['paragoo', 'pelican']), default='pelican')
 def build_logbook(path, destination, sleepdata, censor, sitetype):
-    """
-    Parse logbook markdown files, build html. Enrich with external sources, images
+    """Parse logbook markdown files, build html. Enrich with external sources, images
+
+    Args:
+        path: path to the source of the logbook
+        destination: destination path for generated output
+        sleepdata: path to sleepdata files
+        censor: Boolean to censor private notes or not
+        sitetype: paragoo or pelican output
+    Returns:
+        nothing
     """
     click.secho('Needs implementing', fg='red')
     click.echo(sitetype)
