@@ -28,7 +28,7 @@ def string_to_date(datestring):
 
 
 def get_dates_in_range(startdate, enddate):
-    """Ennumerate all dates from startdate to enddate
+    """Enumerates all dates from startdate to enddate
 
     Args:
         startdate: start of the list of dates
@@ -51,7 +51,7 @@ def get_dates_in_range(startdate, enddate):
 
 
 def get_months_in_range(startdate, enddate):
-    """Ennumerate all months from startdate to enddate
+    """Enumerates all months from startdate to enddate
 
     Args:
         startdate: start of the list of dates
@@ -79,7 +79,7 @@ def get_months_in_range(startdate, enddate):
 
 
 def get_entries_per_day(content):
-    """Split logbook month content into dict with entries per day
+    """Splits logbook month content into dict with entries per day
 
     Args:
         content: 'raw' markdown text of a month
@@ -197,7 +197,7 @@ def cli():
 @click.option('--censor/--normal', default=False)
 @click.option('--sitetype', type=click.Choice(['paragoo', 'pelican']), default='pelican')
 def build_logbook(path, destination, sleepdata, censor, sitetype):
-    """Parse logbook markdown files, build html. Enrich with external sources, images
+    """Parses logbook markdown files, builds pelican or paragoo files. Enriches with external sources, images
 
     Args:
         path: path to the source of the logbook

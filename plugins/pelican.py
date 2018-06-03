@@ -2,5 +2,5 @@
 
 
 def createproject(destinationdir):
-    """Write project files into `destinationdir`"""
+    """Writes generated project files into `destinationdir`, ready to process with Pelican"""
     return
