@@ -4,6 +4,7 @@ Build a HTML representation of your logbook, enriched with data from various sou
 """
 import os
 import sys
+from datetime import date
 
 import click
 import yaml
@@ -20,7 +21,6 @@ except KeyError:
 
 
 def string_to_date(datestring):
-    from datetime import date
     datestring = str(datestring).replace('-', '')
     if len(datestring) == 6:
         datestring = datestring + '01'
@@ -147,9 +147,10 @@ def process_archive(config, path, destination, plugins, censor=False):
 
     cogitorama = Cogitorama()
 
+    current_month = date.today().strftime('%Y%m')
     dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
     filenames = [config['startdate'], '201609']
-    filenames = get_months_in_range(config['startdate'], '201803')
+    filenames = get_months_in_range(config['startdate'], current_month)
     print(filenames)
     #sys.exit()
     for filename in filenames:
@@ -169,8 +170,8 @@ def process_archive(config, path, destination, plugins, censor=False):
         print(destination_path)
 
         this_month_content = ''
-        for date in this_month:
-            this_month_content += '## {}\n{}'.format(date, this_month[date])
+        for the_date in this_month:
+            this_month_content += '## {}\n{}'.format(date, this_month[the_date])
 
         # Continue for now, as this_month is a dict with days
         #continue
