@@ -137,6 +137,10 @@ def process_archive(config, path, destination, plugins, censor=False):
     if config['postfix']:
         file_postfix = '{}{}'.format(config['postfix'], '.md')
 
+    posts_destination_dir = os.path.join(destination, 'content/posts')
+    #os.makedirs(posts_destination_dir, exists_ok=True)
+    os.makedirs(posts_destination_dir)
+
     try:
         if plugins['sleepasandroid']:
             sleepdataitems = sleepasandroid.read(plugins['sleepasandroid'])
@@ -146,8 +150,7 @@ def process_archive(config, path, destination, plugins, censor=False):
     cogitorama = Cogitorama()
 
     current_month = date.today().strftime('%Y%m')
-    dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
-    filenames = [config['startdate'], '201609']
+    #dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
     filenames = get_months_in_range(config['startdate'], current_month)
     print(filenames)
     #sys.exit()
@@ -163,11 +166,12 @@ def process_archive(config, path, destination, plugins, censor=False):
             continue
         # activitydata = parse_google_fit_checkout()
         this_month = process_month(config, textdata, censor=censor, cogitorama=cogitorama)
-        destination_path = os.path.join(destination, str(filename) + '.md')
+        destination_path = os.path.join(posts_destination_dir, str(filename) + '.md')
         #print('{}/{}.md'.format(destination, filename))
         print(destination_path)
 
         this_month_content = ''
+        # TODO: add pelican post item header
         for the_date in this_month:
             this_month_content += '## {}\n{}'.format(the_date, this_month[the_date])
 
