@@ -36,7 +36,7 @@ def get_dates_in_range(startdate, enddate):
     Returns:
         a list of Date objects
     """
-    from datetime import date, timedelta as td
+    from datetime import timedelta as td
 
     result = []
     d1 = string_to_date(startdate)
@@ -59,8 +59,6 @@ def get_months_in_range(startdate, enddate):
     Returns:
         list of months in iso8601 format: yyyymm
     """
-    from datetime import date, timedelta as td
-
     result = []
     startmonth = [int(str(startdate)[0:4]), int(str(startdate)[4:6])]
     endmonth = [int(str(enddate)[0:4]), int(str(enddate)[4:6])]
@@ -91,10 +89,10 @@ def get_entries_per_day(content):
     for entry in entries:
         entry_parts = entry.split('\n')
         if entry_parts[0]:
-            date = entry_parts[0].split(' ')[0]
-            print(date)
+            the_date = entry_parts[0].split(' ')[0]
+            print(the_date)
             entry_parts[0] = '## {}'.format(entry_parts[0])
-            days[date] = {'title': entry_parts[0], 'body': '\n'.join(entry_parts[1:])}
+            days[the_date] = {'title': entry_parts[0], 'body': '\n'.join(entry_parts[1:])}
     return days
 
 
@@ -171,7 +169,7 @@ def process_archive(config, path, destination, plugins, censor=False):
 
         this_month_content = ''
         for the_date in this_month:
-            this_month_content += '## {}\n{}'.format(date, this_month[the_date])
+            this_month_content += '## {}\n{}'.format(the_date, this_month[the_date])
 
         # Continue for now, as this_month is a dict with days
         #continue
