@@ -8,6 +8,15 @@ def naturaldatetime_to_datetimestamp(timestamp):
     return parse(timestamp)
 
 
+def lastfm_top_3(the_list):
+    result = {}
+    for datestamp in the_list:
+        datelist = the_list[datestamp]
+        sorted_list = [(k, datelist[k]) for k in sorted(datelist, key=datelist.get, reverse=True)]
+        result[datestamp] = sorted_list[0:3]
+    return result
+
+
 def lastfm_stats(filename):
     artists_per_day = {}
     artists_per_month = {}
@@ -47,3 +56,5 @@ if __name__ == "__main__":
     print(per_day)
     print('-----------------------------------------------------')
     print(per_month)
+    print('-----------------------------------------------------')
+    print(lastfm_top_3(per_month))
