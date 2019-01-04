@@ -1,4 +1,4 @@
 click
 python-dateutil
-PyYAML
+strictyaml
 requests
