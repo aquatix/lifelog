@@ -7,7 +7,7 @@ import sys
 from datetime import date
 
 import click
-import yaml
+import strictyaml
 
 # Export plugins
 from plugins import paragoo, pelican, sleepasandroid
@@ -216,7 +216,7 @@ def build_logbook(path, destination, sleepdata, censor, sitetype):
 
     try:
         f = open(os.path.join(path, 'lifelog.yaml'))
-        config = yaml.safe_load(f)
+        config = strictyaml.load(f.read()).data
         f.close()
     except IOError as e:
         print(e)
