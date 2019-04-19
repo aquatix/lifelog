@@ -10,7 +10,7 @@ click==7.0
 idna==2.8                 # via requests
 python-dateutil==2.8.0
 requests==2.21.0
-ruamel.yaml==0.15.91      # via strictyaml
+ruamel.yaml==0.15.92      # via strictyaml
 six==1.12.0               # via python-dateutil
 strictyaml==1.0.1
-urllib3==1.24.1           # via requests
+urllib3==1.24.2           # via requests
