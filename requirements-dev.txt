@@ -4,28 +4,29 @@
 #
 #    pip-compile requirements-dev.in
 #
-astroid==2.2.5            # via pylint
+astroid==2.3.3            # via pylint
 better-exceptions==0.2.2
 blessings==1.7            # via curtsies
 bpython==0.18
-certifi==2019.3.9         # via requests
+certifi==2019.9.11        # via requests
 chardet==3.0.4            # via requests
 click==7.0
 curtsies==0.3.0           # via bpython
 greenlet==0.4.15          # via bpython
 idna==2.8                 # via requests
-isort==4.3.20             # via pylint
-lazy-object-proxy==1.4.1  # via astroid
+isort==4.3.21             # via pylint
+lazy-object-proxy==1.4.3  # via astroid
 mccabe==0.6.1             # via pylint
 pygments==2.4.2           # via bpython
-pylint==2.3.1
-python-dateutil==2.8.0
+pylint==2.4.4
+python-dateutil==2.8.1
 requests==2.22.0
-ruamel.yaml==0.15.97      # via strictyaml
-six==1.12.0               # via astroid, blessings, bpython, python-dateutil
-strictyaml==1.0.1
+ruamel.yaml.clib==0.2.0   # via ruamel.yaml
+ruamel.yaml==0.16.5       # via strictyaml
+six==1.13.0               # via astroid, blessings, bpython, python-dateutil
+strictyaml==1.0.6
 typed-ast==1.4.0          # via astroid
-typing==3.6.6             # via curtsies
-urllib3==1.25.3           # via requests
+typing==3.7.4.1           # via curtsies
+urllib3==1.25.7           # via requests
 wcwidth==0.1.7            # via curtsies
-wrapt==1.11.1             # via astroid
+wrapt==1.11.2             # via astroid
