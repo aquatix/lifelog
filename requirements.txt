@@ -14,4 +14,4 @@ ruamel.yaml.clib==0.2.0   # via ruamel.yaml
 ruamel.yaml==0.16.10      # via strictyaml
 six==1.15.0               # via python-dateutil
 strictyaml==1.0.6         # via -r requirements.in
-urllib3==1.25.9           # via requests
+urllib3==1.26.5           # via requests
