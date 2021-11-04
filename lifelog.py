@@ -4,20 +4,20 @@ Build a HTML representation of your logbook, enriched with data from various sou
 """
 import os
 import sys
-from datetime import date
+from datetime import date, timedelta
 
 import click
 import strictyaml
 
 # Export plugins
-from plugins import paragoo, pelican, sleepasandroid
+from plugins import json_base, paragoo, pelican, sleepasandroid
 from plugins.cogitorama import Cogitorama
 
-try:
-    if os.environ['BETTER_EXCEPTIONS']:
-        import better_exceptions
-except KeyError:
-    pass
+#  try:
+#      if os.environ['BETTER_EXCEPTIONS']:
+#          import better_exceptions
+#  except KeyError:
+#      pass
 
 
 def string_to_date(datestring):
@@ -36,7 +36,6 @@ def get_dates_in_range(startdate, enddate):
     Returns:
         a list of Date objects
     """
-    from datetime import timedelta as td
 
     result = []
     d1 = string_to_date(startdate)
@@ -45,7 +44,7 @@ def get_dates_in_range(startdate, enddate):
     delta = d2 - d1
 
     for i in range(delta.days + 1):
-        result.append(d1 + td(days=i))
+        result.append(d1 + timedelta(days=i))
 
     return result
 
@@ -139,7 +138,8 @@ def process_archive(config, path, destination, plugins, censor=False):
 
     posts_destination_dir = os.path.join(destination, 'content/posts')
     #os.makedirs(posts_destination_dir, exists_ok=True)
-    os.makedirs(posts_destination_dir)
+    if not os.path.isdir(posts_destination_dir):
+        os.makedirs(posts_destination_dir)
 
     try:
         if plugins['sleepasandroid']:
@@ -198,7 +198,7 @@ def cli():
 @click.option('-d', '--destination', prompt='Destination path', type=click.Path(exists=True))
 @click.option('-s', '--sleepdata', default=None, type=click.Path(exists=True))
 @click.option('--censor/--normal', default=False)
-@click.option('--sitetype', type=click.Choice(['paragoo', 'pelican']), default='pelican')
+@click.option('--sitetype', type=click.Choice(['json', 'paragoo', 'pelican']), default='json')
 def build_logbook(path, destination, sleepdata, censor, sitetype):
     """Parses logbook markdown files, builds pelican or paragoo files. Enriches with external sources, images
 
@@ -232,6 +232,8 @@ def build_logbook(path, destination, sleepdata, censor, sitetype):
         paragoo.createproject(destination)
     elif sitetype == 'pelican':
         pelican.createproject(destination)
+    elif sitetype == 'json':
+        json_base.createproject(destination)
 
 
 if __name__ == '__main__':
