@@ -1,5 +1,4 @@
 -r requirements.txt
 
-better-exceptions
 bpython
-pylint
+ruff

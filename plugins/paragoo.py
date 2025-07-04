@@ -2,5 +2,5 @@
 
 
 def createproject(destinationdir):
-    """Writes project files into `destinationdir`"""
+    """Write project files into `destinationdir`."""
     return

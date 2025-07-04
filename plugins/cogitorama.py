@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
-
 class Cogitorama:
+    """Cogitorama tags."""
+
     PREFIX = 'cogitorama:'
 
     cogitoramas = {}
 
     @staticmethod
     def get_term(term):
-        """
-        Parse a cogitorama term and return the keyword with its sign
+        """Parse a cogitorama term and return the keyword with its sign.
 
         :param str term:
         :return: Tuple with (term, sign)
@@ -26,8 +25,7 @@ class Cogitorama:
         self.cogitoramas[date] = cogitorama
 
     def get_cogitoramas(self):
-        """
-        Return dictionary with all terms and the amount of times they occur in the logbook
+        """Return dictionary with all terms and the amount of times they occur in the logbook.
 
         :return: dictionary with all terms and the amount of times they occur in the logbook
         :rtype: dict
@@ -38,7 +36,7 @@ class Cogitorama:
                 term, sign = self.get_term(term)
                 if not term:
                     continue
-                if not term in result:
+                if term not in result:
                     result[term] = 0
                 if sign == '+':
                     result[term] += 1
@@ -49,9 +47,7 @@ class Cogitorama:
         return result
 
     def print_stats(self):
-        """
-        Print the list of cogitoramas with the amount of times they were encountered in the logbook
-        """
+        """Print the list of cogitoramas with the amount of times they were encountered in the logbook."""
         cogs = self.get_cogitoramas()
         for key in sorted(cogs):
             print('{:3} {}'.format(cogs[key], key))

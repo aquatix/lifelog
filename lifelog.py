@@ -1,7 +1,4 @@
-"""lifelog.py
-
-Build a HTML representation of your logbook, enriched with data from various sources
-"""
+"""Build a representation of your logbook, enriched with data from various sources."""
 import os
 import sys
 from datetime import date, timedelta
@@ -13,14 +10,14 @@ import strictyaml
 from plugins import json_base, paragoo, pelican, sleepasandroid
 from plugins.cogitorama import Cogitorama
 
-#  try:
-#      if os.environ['BETTER_EXCEPTIONS']:
-#          import better_exceptions
-#  except KeyError:
-#      pass
-
 
 def string_to_date(datestring):
+    """Convert string containing a date to a date object.
+
+    :param str datestring: string with a date of format `yyyy-mm-dd`
+    :return: date
+    :rtype: date
+    """
     datestring = str(datestring).replace('-', '')
     if len(datestring) == 6:
         datestring = datestring + '01'
@@ -28,15 +25,13 @@ def string_to_date(datestring):
 
 
 def get_dates_in_range(startdate, enddate):
-    """Enumerates all dates from startdate to enddate
+    """Enumerate all dates from startdate to enddate.
 
-    Args:
-        startdate: start of the list of dates
-        enddate: end of the list of dates, likely today
-    Returns:
-        a list of Date objects
+    :param date startdate: start of the list of dates
+    :param date enddate: end of the list of dates, likely today
+    :return: a list of Date objects
+    :rtype: list
     """
-
     result = []
     d1 = string_to_date(startdate)
     d2 = string_to_date(enddate)
@@ -50,13 +45,14 @@ def get_dates_in_range(startdate, enddate):
 
 
 def get_months_in_range(startdate, enddate):
-    """Enumerates all months from startdate to enddate
+    """Enumerate all months from startdate to enddate.
 
     Args:
         startdate: start of the list of dates
         enddate: end of the list of dates, likely today
     Returns:
         list of months in iso8601 format: yyyymm
+
     """
     result = []
     startmonth = [int(str(startdate)[0:4]), int(str(startdate)[4:6])]
@@ -76,12 +72,11 @@ def get_months_in_range(startdate, enddate):
 
 
 def get_entries_per_day(content):
-    """Splits logbook month content into dict with entries per day
+    """Split logbook month content into dict with entries per day.
 
-    Args:
-        content: 'raw' markdown text of a month
-    Returns:
-        dictionary of days
+    :param str content: 'raw' markdown text of a month
+    :return: list of days, dictionary object per day
+    :rtype: list
     """
     entries = content.split('## ')
     days = {}
@@ -96,6 +91,13 @@ def get_entries_per_day(content):
 
 
 def process_month(config, textdata, censor=False, cogitorama=None):
+    """Split month file into day entries.
+
+    :param dict config:
+    :param str textdata:
+    :param bool censor:
+    :param str cogitorama:
+    """
     days = get_entries_per_day(textdata)
     # Extra text to highlight, when starting a line:
     highlights = config['highlight']
@@ -131,6 +133,14 @@ def process_month(config, textdata, censor=False, cogitorama=None):
 
 
 def process_archive(config, path, destination, plugins, censor=False):
+    """Parse archive with monthly log entries.
+
+    :param dict config:
+    :param str path: path to the source of the logbook
+    :param str destination: destination path for generated output
+    :param list plugins:
+    :param bool censor: Boolean to censor private notes or not
+    """
     print(config)
     file_postfix = '.md'
     if config['postfix']:
@@ -189,7 +199,7 @@ def process_archive(config, path, destination, plugins, censor=False):
 ## Main program
 @click.group()
 def cli():
-    # Lifelog logbook parser
+    """Lifelog logbook parser."""
     pass
 
 
@@ -200,16 +210,16 @@ def cli():
 @click.option('--censor/--normal', default=False)
 @click.option('--sitetype', type=click.Choice(['json', 'paragoo', 'pelican']), default='json')
 def build_logbook(path, destination, sleepdata, censor, sitetype):
-    """Parses logbook markdown files, builds pelican or paragoo files. Enriches with external sources, images
+    """Parse logbook markdown files, build JSON, Obisidian, Pelican or paragoo files.
 
-    Args:
-        path: path to the source of the logbook
-        destination: destination path for generated output
-        sleepdata: path to sleepdata files
-        censor: Boolean to censor private notes or not
-        sitetype: paragoo or pelican output
-    Returns:
-        nothing
+    Enriches the logbook entries with external sources, images.
+
+    :param str path: path to the source of the logbook
+    :param str destination: destination path for generated output
+    :param str sleepdata: path to sleepdata files
+    :param bool censor: Boolean to censor private notes or not
+    :param str sitetype: paragoo or pelican output
+    :return: nothing
     """
     click.secho('Needs implementing', fg='red')
     click.echo(sitetype)
@@ -237,5 +247,5 @@ def build_logbook(path, destination, sleepdata, censor, sitetype):
 
 
 if __name__ == '__main__':
-    # Lifelog is being run standalone
+    # Lifelog is being run standalone, use click CLI parser
     cli()

@@ -2,6 +2,7 @@
 import csv
 from datetime import datetime, timedelta
 
+
 def read(filename):
     with open(filename, 'rt') as csvfile:
         source = csv.reader(csvfile)

@@ -4,7 +4,7 @@ from dateutil.parser import parse
 
 
 def naturaldatetime_to_datetimestamp(timestamp):
-    """Convert '24 Aug 2018 15:02' to datetime object"""
+    """Convert '24 Aug 2018 15:02' to datetime object."""
     return parse(timestamp)
 
 
@@ -18,6 +18,12 @@ def lastfm_top_3(the_list):
 
 
 def lastfm_stats(filename):
+    """Artists per day and month.
+
+    :param str filename: input CSV with LastFM stats
+    :return: artists per day and per month
+    :rtype: list, list
+    """
     artists_per_day = {}
     artists_per_month = {}
     current_date = ''
