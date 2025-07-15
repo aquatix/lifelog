@@ -1,4 +1,3 @@
-from . import NotImplemented
 
 def listenbrainz_stats(filename):
     """Artists statistics.
@@ -7,7 +6,7 @@ def listenbrainz_stats(filename):
     :return: artists per day and per month
     :rtype: list, list
     """
-    raise NotImplemented('ListenBrainz is not implemented yet')
+    raise NotImplementedError('ListenBrainz is not implemented yet')
 
 
 def read_file(jsonl_file):

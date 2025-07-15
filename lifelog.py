@@ -7,7 +7,7 @@ import click
 import strictyaml
 
 # Export plugins
-from plugins import json_base, listenbrainz, paragoo, pelican, sleepasandroid, NotImplemented
+from plugins import json_base, listenbrainz, paragoo, pelican, sleepasandroid
 from plugins.cogitorama import Cogitorama
 
 
@@ -163,7 +163,7 @@ def process_archive(config, path, destination, plugins, censor=False):
     try:
         listen_stats = listenbrainz.listenbrainz_stats(listenbrainz_filename)
         print(listen_stats)
-    except NotImplemented as err:
+    except NotImplementedError as err:
         print(f'Error while parsing ListenBrainz: {err}')
 
     current_month = date.today().strftime('%Y%m')
