@@ -7,7 +7,7 @@ import click
 import strictyaml
 
 # Export plugins
-from plugins import json_base, paragoo, pelican, sleepasandroid
+from plugins import json_base, listenbrainz, paragoo, pelican, sleepasandroid, NotImplemented
 from plugins.cogitorama import Cogitorama
 
 
@@ -153,11 +153,18 @@ def process_archive(config, path, destination, plugins, censor=False):
 
     try:
         if plugins['sleepasandroid']:
-            sleepdataitems = sleepasandroid.read(plugins['sleepasandroid'])
+            sleep_data_items = sleepasandroid.read(plugins['sleepasandroid'])
     except KeyError:
         pass
 
     cogitorama = Cogitorama()
+
+    listenbrainz_filename = ''
+    try:
+        listen_stats = listenbrainz.listenbrainz_stats(listenbrainz_filename)
+        print(listen_stats)
+    except NotImplemented as err:
+        print(f'Error while parsing ListenBrainz: {err}')
 
     current_month = date.today().strftime('%Y%m')
     #dates = get_dates_in_range('{}01'.format(config['startdate']), '20160920')
@@ -208,9 +215,9 @@ def cli():
 @click.option('-d', '--destination', prompt='Destination path', type=click.Path(exists=True))
 @click.option('-s', '--sleepdata', default=None, type=click.Path(exists=True))
 @click.option('--censor/--normal', default=False)
-@click.option('--sitetype', type=click.Choice(['json', 'paragoo', 'pelican']), default='json')
+@click.option('--sitetype', type=click.Choice(['json', 'obsidian', 'paragoo', 'pelican']), default='json')
 def build_logbook(path, destination, sleepdata, censor, sitetype):
-    """Parse logbook markdown files, build JSON, Obisidian, Pelican or paragoo files.
+    """Parse logbook markdown files, build JSON, Obsidian, Pelican or paragoo files.
 
     Enriches the logbook entries with external sources, images.
 
